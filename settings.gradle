@@ -1,0 +1,6 @@
+include ':app'
+include ':blogValueAnimator1'
+include ':blogValueAnimator2'
+include ':blogValueAnimator4'
+include ':blogValueAnimator3'
+include ':blogObjectAnimator1'
