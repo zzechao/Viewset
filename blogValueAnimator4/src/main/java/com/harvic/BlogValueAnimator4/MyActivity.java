@@ -35,11 +35,11 @@ public class MyActivity extends Activity {
                 /**
                  * 一:ofObject()概述
                  */
-//                doObjectAnimation();
+                doObjectAnimation();
                 /**
                  * 二、ofObject之自定义对象示例
                  */
-                mPointView.doPointAnim();
+                //mPointView.doPointAnim();
             }
         });
 

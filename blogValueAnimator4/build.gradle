@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.harvic.BlogValueAnimator4"
-        minSdkVersion 15
-        targetSdkVersion 15
+        minSdkVersion 16
+        targetSdkVersion 28
     }
 
     buildTypes {
