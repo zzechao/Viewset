@@ -8,8 +8,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Animatorxml" />
             <option value="$PROJECT_DIR$/Keyframe" />
             <option value="$PROJECT_DIR$/PropertyValuesHolder" />
+            <option value="$PROJECT_DIR$/RoateMenus" />
             <option value="$PROJECT_DIR$/animatorset" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/blogObjectAnimator1" />
