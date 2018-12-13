@@ -1,4 +1,4 @@
-include ':app', ':PropertyValuesHolder'
+include ':app', ':PropertyValuesHolder', ':Keyframe', ':animatorset'
 include ':blogValueAnimator1'
 include ':blogValueAnimator2'
 include ':blogValueAnimator4'

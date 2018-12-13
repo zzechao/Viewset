@@ -28,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
                 //doPlayTogetherAnimator();
 
-                doAnimatorSetBuilder();
+                //doAnimatorSetBuilder();
+
+                doStartDelay();
             }
         });
     }
@@ -76,6 +78,33 @@ public class MainActivity extends AppCompatActivity {
         AnimatorSet.Builder builder = animatorSet.play(tv1BgAnimator);
         builder.with(tv1TranslateY);
         animatorSet.setDuration(1000);
+        animatorSet.start();
+    }
+
+    private void doSetTarget() {
+        ObjectAnimator tv1BgAnimator = ObjectAnimator.ofInt(mTv1, "BackgroundColor", 0xffff00ff, 0xffffff00, 0xffff00ff);
+        ObjectAnimator tv2TranslateY = ObjectAnimator.ofFloat(mTv2, "translationY", 0, 400, 0);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(tv1BgAnimator, tv2TranslateY);
+        animatorSet.setDuration(2000);
+        animatorSet.setTarget(mTv2);
+        animatorSet.start();
+    }
+
+    /**
+     * mTv2时长4000，mTv1时长6000
+     */
+    private void doStartDelay() {
+        ObjectAnimator tv1TranslateY = ObjectAnimator.ofFloat(mTv1, "translationY", 0, 400, 0);
+        tv1TranslateY.setStartDelay(2000);
+        ObjectAnimator tv2TranslateY = ObjectAnimator.ofFloat(mTv2, "translationY", 0, 400, 0);
+        tv2TranslateY.setStartDelay(2000);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(tv2TranslateY).with(tv1TranslateY);
+        animatorSet.setStartDelay(2000);
+        animatorSet.setDuration(2000);
         animatorSet.start();
     }
 }
