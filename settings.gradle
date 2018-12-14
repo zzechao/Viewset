@@ -1,4 +1,4 @@
-include ':app', ':PropertyValuesHolder', ':Keyframe', ':animatorset', ':RoateMenus', ':Animatorxml'
+include ':app', ':PropertyValuesHolder', ':Keyframe', ':animatorset', ':RoateMenus', ':Animatorxml', ':Layoutanimation', ':paintcanvas'
 include ':blogValueAnimator1'
 include ':blogValueAnimator2'
 include ':blogValueAnimator4'

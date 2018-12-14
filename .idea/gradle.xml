@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Animatorxml" />
             <option value="$PROJECT_DIR$/Keyframe" />
+            <option value="$PROJECT_DIR$/Layoutanimation" />
             <option value="$PROJECT_DIR$/PropertyValuesHolder" />
             <option value="$PROJECT_DIR$/RoateMenus" />
             <option value="$PROJECT_DIR$/animatorset" />
@@ -19,6 +20,7 @@
             <option value="$PROJECT_DIR$/blogValueAnimator2" />
             <option value="$PROJECT_DIR$/blogValueAnimator3" />
             <option value="$PROJECT_DIR$/blogValueAnimator4" />
+            <option value="$PROJECT_DIR$/paintcanvas" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
