@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -47,6 +49,41 @@ public class MyView extends View {
      * 4、多个点
      * void drawPoints (float[] pts, Paint paint)
      * void drawPoints (float[] pts, int offset, int count, Paint paint)
+     * <p>
+     * 5、矩形工具类RectF与Rect
+     * 这两个都是矩形辅助类，区别不大，用哪个都行，根据四个点构建一个矩形结构；在画图时，利用这个矩形结构可以画出对应的矩形或者与其它图形Region相交、相加等等；
+     * -RectF：
+     * 构造函数有下面四个，但最常用的还是第二个，根据四个点构造出一个矩形；
+     * RectF()
+     * RectF(float left, float top, float right, float bottom)
+     * RectF(RectF r)
+     * RectF(Rect r)
+     * -Rect
+     * 构造函数如下，最常用的也是根据四个点来构造矩形
+     * Rect()
+     * Rect(int left, int top, int right, int bottom)
+     * Rect(Rect r)
+     * <p>
+     * 7、圆角矩形
+     * void drawRoundRect (RectF rect, float rx, float ry, Paint paint)
+     * <p>
+     * 8、圆形
+     * void drawCircle (float cx, float cy, float radius, Paint paint)
+     * <p>
+     * 9、椭圆
+     * 椭圆是根据矩形生成的，以矩形的长为椭圆的X轴，矩形的宽为椭圆的Y轴，建立的椭圆图形
+     * void drawOval (RectF oval, Paint paint)
+     * 参数：
+     * RectF oval：用来生成椭圆的矩形
+     * <p>
+     * 10、弧
+     * 弧是椭圆的一部分，而椭圆是根据矩形来生成的，所以弧当然也是根据矩形来生成的；
+     * void drawArc (RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint)
+     * 参数：
+     * RectF oval:生成椭圆的矩形
+     * float startAngle：弧开始的角度，以X轴正方向为0度
+     * float sweepAngle：弧持续的角度
+     * boolean useCenter:是否有弧的两边，True，还两边，False，只有一条弧
      *
      * @param canvas
      */
@@ -68,6 +105,21 @@ public class MyView extends View {
 
         //画点
         paintPoints(canvas);
+
+        //画正方形
+        paintRect(canvas);
+
+        //圆角矩形
+        paintRoundRect(canvas);
+
+        //画圆
+        paintTCircle(canvas);
+
+        //画椭圆
+        paintOval(canvas);
+
+        //画弧
+        paintArc(canvas);
     }
 
     private void paintCircle(Canvas canvas) {
@@ -120,5 +172,64 @@ public class MyView extends View {
         paint.setStrokeWidth(15);//设置画笔宽度
         float[] pts = {10, 10, 100, 100, 200, 200, 400, 400};
         canvas.drawPoints(pts, 2, 4, paint);
+    }
+
+    private void paintRect(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);  //设置画笔颜色
+        paint.setStyle(Paint.Style.FILL);//设置填充样式
+        paint.setStrokeWidth(15);//设置画笔宽度
+
+        canvas.drawRect(10, 10, 100, 100, paint);//直接构造
+
+        RectF rect = new RectF(120, 10, 210, 100);
+        canvas.drawRect(rect, paint);//使用RectF构造
+
+        Rect rect2 = new Rect(230, 10, 320, 100);
+        canvas.drawRect(rect2, paint);//使用Rect构造
+    }
+
+    private void paintRoundRect(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);  //设置画笔颜色
+        paint.setStyle(Paint.Style.FILL);//设置填充样式
+        paint.setStrokeWidth(15);//设置画笔宽度
+
+        RectF rect = new RectF(100, 10, 300, 100);
+        canvas.drawRoundRect(rect, 20, 10, paint);
+    }
+
+    private void paintTCircle(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);  //设置画笔颜色
+        paint.setStyle(Paint.Style.FILL);//设置填充样式
+        paint.setStrokeWidth(15);//设置画笔宽度
+        canvas.drawCircle(150, 150, 100, paint);
+    }
+
+    private void paintOval(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);  //设置画笔颜色
+        paint.setStyle(Paint.Style.STROKE);//填充样式改为描边
+        paint.setStrokeWidth(5);//设置画笔宽度
+
+        RectF rect = new RectF(100, 10, 300, 100);
+        canvas.drawRect(rect, paint);//画矩形
+
+        paint.setColor(Color.GREEN);//更改画笔颜色
+        canvas.drawOval(rect, paint);//同一个矩形画椭圆
+    }
+
+    private void paintArc(Canvas canvas) {
+        Paint paint=new Paint();
+        paint.setColor(Color.RED);  //设置画笔颜色
+        paint.setStyle(Paint.Style.STROKE);//填充样式改为描边
+        paint.setStrokeWidth(5);//设置画笔宽度
+
+        RectF rect1 = new RectF(100, 10, 300, 100);
+        canvas.drawArc(rect1, 0, 90, true, paint);
+
+        RectF rect2 = new RectF(400, 10, 600, 100);
+        canvas.drawArc(rect2, 0, 90, false, paint);
     }
 }
