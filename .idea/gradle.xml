@@ -24,6 +24,7 @@
             <option value="$PROJECT_DIR$/colormatrix" />
             <option value="$PROJECT_DIR$/drawpath" />
             <option value="$PROJECT_DIR$/paintcanvas" />
+            <option value="$PROJECT_DIR$/setcolorfilter" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
