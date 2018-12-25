@@ -75,7 +75,9 @@ public class View5 extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-
+        /**
+         * 画布1画波浪
+         */
         Canvas c = new Canvas(dstB);
         path.reset();
         path.moveTo(-waveLen + dx, height / 2);
@@ -91,6 +93,9 @@ public class View5 extends View {
         c.drawColor(Color.BLACK, PorterDuff.Mode.CLEAR);
         c.drawPath(path, paint);
 
+        /**
+         * 画布2画文字
+         */
         Canvas textC = new Canvas(textB);
         String str = "测试测试";
         float textWidth = paintText.measureText(str);
@@ -99,6 +104,10 @@ public class View5 extends View {
         textC.drawText(str, textLeft, (height + 36) / 2, paintText);
 
         canvas.drawColor(Color.BLACK);
+
+        /**
+         * h
+         */
         canvas.drawBitmap(textB, 0, 0, paint);
         int layerId = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
         canvas.drawBitmap(dstB, 0, 0, paint);
