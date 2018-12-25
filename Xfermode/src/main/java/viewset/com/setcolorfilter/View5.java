@@ -106,7 +106,7 @@ public class View5 extends View {
         canvas.drawColor(Color.BLACK);
 
         /**
-         * h
+         * 只有同一个paint才能切换图形
          */
         canvas.drawBitmap(textB, 0, 0, paint);
         int layerId = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
