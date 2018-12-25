@@ -11,6 +11,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ((FrameLayout) findViewById(R.id.fl)).addView(new View3(this));
+        View4 view = new View4(this);
+        view.setClickable(true);
+        ((FrameLayout) findViewById(R.id.fl)).addView(view);
     }
 }

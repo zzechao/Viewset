@@ -14,27 +14,28 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class View3 extends View {
+public class View4 extends View {
 
     private final int width;
     private final int height;
     private final Bitmap dstB;
     private final Path path;
     Paint paint;
+    Paint paintText;
     Bitmap srcB;
     private float currentX;
     private float currentY;
     private boolean is_init;
 
-    public View3(Context context) {
+    public View4(Context context) {
         this(context, null);
     }
 
-    public View3(Context context, @Nullable AttributeSet attrs) {
+    public View4(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public View3(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public View4(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         paint = new Paint();
@@ -43,6 +44,12 @@ public class View3 extends View {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(45);
+
+
+        paintText = new Paint();
+        paintText.setColor(Color.RED);
+        paintText.setAntiAlias(true);
+        paintText.setTextSize(36);
 
         srcB = BitmapFactory.decodeResource(getResources(), R.mipmap.timg1, null);
         width = 350;
@@ -63,7 +70,14 @@ public class View3 extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int layerID = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.ALL_SAVE_FLAG);
+
+        String str = "测试测试";
+        float textWidth = paintText.measureText(str);
+        float textLeft = (width - textWidth) / 2;
+
+        canvas.drawText(str, textLeft, (height + 36) / 2, paintText);
+
+        int layerID = canvas.saveLayer(0, 0, width, height, paint, Canvas.ALL_SAVE_FLAG);
 
         canvas.drawBitmap(srcB, 0, 0, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
