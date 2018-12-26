@@ -17,12 +17,13 @@ import android.view.View;
 public class View1 extends View {
 
 
-    private final int radiu;
+    private int radiu1;
+    private int radiu0;
     private final Paint paint2;
 
     private Paint paint;
+    private Paint textPaint;
     private Path path;
-    private boolean isOk;
 
     private Point point0;
     private Point point1;
@@ -32,6 +33,13 @@ public class View1 extends View {
 
     private Point point4;
     private Point point5;
+
+    private double mWidth;
+    // 阻力
+    private int resistance;
+
+    private boolean _isTouchIn;
+    private boolean _isTouchOut;
 
     public View1(Context context) {
         this(context, null);
@@ -45,7 +53,10 @@ public class View1 extends View {
         super(context, attrs, defStyleAttr);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        radiu = 10;
+        resistance = 20;
+
+        radiu1 = 10;
+        radiu0 = radiu1;
 
         // 第一坐标
         point0 = new Point(50, 50);
@@ -69,6 +80,11 @@ public class View1 extends View {
         paint2.setAntiAlias(true);
         paint2.setStyle(Paint.Style.FILL);
 
+        textPaint = new Paint();
+        textPaint.setColor(Color.WHITE);
+        textPaint.setAntiAlias(true);
+        textPaint.setTextSize(16);
+
         path = new Path();
     }
 
@@ -80,14 +96,32 @@ public class View1 extends View {
         super.onDraw(canvas);
 
 
-        canvas.drawCircle(point0.x, point0.y, radiu, paint);
-
         if (point1.x != 0 && point1.y != 0) {
-            path.reset();
             resetPoint();
-            canvas.drawCircle(point2.x, point2.y, 2, paint2);
-            canvas.drawCircle(point3.x, point3.y, 2, paint2);
-            canvas.drawCircle(point1.x, point1.y, radiu, paint);
+            if (!_isTouchOut) {
+                canvas.drawCircle(point2.x, point2.y, 2, paint2);
+                canvas.drawCircle(point3.x, point3.y, 2, paint2);
+                canvas.drawCircle(point4.x, point4.y, 2, paint2);
+                canvas.drawCircle(point5.x, point5.y, 2, paint2);
+
+                path.reset();
+                path.moveTo(point2.x, point2.y);
+                path.quadTo((point0.x + point1.x) / 2, (point0.y + point1.y) / 2, point4.x, point4.y);
+                path.lineTo(point5.x, point5.y);
+                path.quadTo((point0.x + point1.x) / 2, (point0.y + point1.y) / 2, point3.x, point3.y);
+                path.lineTo(point2.x, point2.y);
+                path.close();
+                canvas.drawPath(path, paint);
+            }
+
+            canvas.drawCircle(point1.x, point1.y, radiu1, paint);
+            String num = "11";
+            int textWidth = (int) textPaint.measureText(num);
+            canvas.drawText(num, point1.x - textWidth / 2, point1.y + 12 / 2, textPaint);
+        }
+
+        if (!_isTouchOut) {
+            canvas.drawCircle(point0.x, point0.y, radiu0, paint);
         }
     }
 
@@ -99,14 +133,35 @@ public class View1 extends View {
      * point3:
      * x3 = x0 - r * sina;
      * y3 = x0 + r * sina;
+     * <p>
+     * point4:
+     * x4 = x1 + r * sina;
+     * y4 = y1 - r * sina;
+     * <p>
+     * point5:
+     * x5 = x1 - r * sina;
+     * y5 = y1 + r * sina;
+     * 重新绘制点
      */
     private void resetPoint() {
         double a = Math.atan((point1.y - point0.y) * 1F / (point1.x - point0.x));
-        point2.x = (int) (point0.x + radiu * Math.sin(a));
-        point2.y = (int) (point0.y - radiu * Math.cos(a));
 
-        point3.x = (int) (point0.x - radiu * Math.sin(a));
-        point3.y = (int) (point0.y + radiu * Math.cos(a));
+        mWidth = Math.abs((point1.y - point0.y) / Math.sin(a));
+        radiu0 = (radiu1 - mWidth / resistance) < 5 ? 5 : (int) (radiu1 - mWidth / resistance);
+        point2.x = (int) (point0.x + radiu0 * Math.sin(a));
+        point2.y = (int) (point0.y - radiu0 * Math.cos(a));
+
+        point3.x = (int) (point0.x - radiu0 * Math.sin(a));
+        point3.y = (int) (point0.y + radiu0 * Math.cos(a));
+
+        point4.x = (int) (point1.x + radiu1 * Math.sin(a));
+        point4.y = (int) (point1.y - radiu1 * Math.cos(a));
+
+        point5.x = (int) (point1.x - radiu1 * Math.sin(a));
+        point5.y = (int) (point1.y + radiu1 * Math.cos(a));
+        if ((radiu1 - mWidth / resistance) < 3) {
+            _isTouchOut = true;
+        }
     }
 
     @Override
@@ -118,18 +173,21 @@ public class View1 extends View {
                 if (Math.abs(x) <= 10 && Math.abs(y) <= 10) {
                     event.setAction(MotionEvent.ACTION_MOVE);
                     onTouchEvent(event);
-                    isOk = true;
+                    _isTouchIn = true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (isOk) {
+                if (_isTouchIn) {
                     point1.set((int) event.getX(), (int) event.getY());
                     postInvalidate();
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (isOk) {
-                    isOk = false;
+                if (_isTouchIn) {
+                    _isTouchIn = false;
+                    _isTouchOut = false;
+                    mWidth = 0;
+                    radiu0 = radiu1;
                     point1.set(0, 0);
                     path.reset();
                     postInvalidate();
