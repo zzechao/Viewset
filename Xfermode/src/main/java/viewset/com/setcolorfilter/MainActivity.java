@@ -11,9 +11,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View6 view = new View6(this);
+        View7 view = new View7(this);
         view.setClickable(true);
         ((FrameLayout) findViewById(R.id.fl)).addView(view);
-        view.startAnim();
+        //view.startAnim();
     }
 }

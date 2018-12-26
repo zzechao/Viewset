@@ -1,25 +1,20 @@
 package viewset.com.setcolorfilter;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 
 /**
  * drawBitmap第二个参数
  */
-public class View6 extends View {
+public class View7 extends View {
 
     private final int width;
     private final int height;
@@ -28,20 +23,20 @@ public class View6 extends View {
     Bitmap srcB;
     private int dx;
 
-    public View6(Context context) {
+    public View7(Context context) {
         this(context, null);
     }
 
-    public View6(Context context, @Nullable AttributeSet attrs) {
+    public View7(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public View6(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public View7(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         paint = new Paint();
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.GREEN);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(1);
@@ -64,32 +59,21 @@ public class View6 extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        Canvas srcC = new Canvas(srcB);
-        srcC.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        srcC.drawCircle(width / 2, height / 2, width / 2, paint);
-        canvas.drawBitmap(srcB, 0, 0, paint);
-        int layerId = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
-        canvas.drawBitmap(dstB, new Rect(dx, 0, (dx + width) > dstB.getWidth() ? dstB.getWidth() : dx + width, dstB.getHeight()), new RectF(0, 0, width, height), paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        canvas.drawBitmap(srcB, 0, 0, paint);
-        paint.setXfermode(null);
-
-        canvas.restoreToCount(layerId);
-    }
-
-    public void startAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(0, dstB.getWidth());
-        animator.setDuration(4000);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                dx = (int) animation.getAnimatedValue();
-                postInvalidate();
-            }
-        });
-        animator.start();
+        canvas.drawRect(new RectF(0, 0, 500, 500), paint);
+        int layerId1 = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
+        paint.setColor(Color.RED);
+        canvas.drawRect(new RectF(100, 100, 400, 400), paint);
+        int layerId2 = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
+        paint.setColor(Color.BLUE);
+        canvas.drawRect(new RectF(200, 200, 300, 300), paint);
+        canvas.rotate(30);
+        int layerId3 = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
+        canvas.clipRect(new RectF(150, 200, 350, 400));
+        canvas.drawColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
+        canvas.drawRect(new RectF(100, 100, 300, 400), paint);
+        canvas.restoreToCount(layerId2);
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(new RectF(15, 23, 45, 67), paint);
     }
 }
