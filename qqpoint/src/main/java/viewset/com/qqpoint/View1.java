@@ -1,30 +1,38 @@
 package viewset.com.qqpoint;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 
 /**
  * QQ红点的拖拽效果
  */
 public class View1 extends View {
 
-
-    private int radiu1;
+    // point1的半径
+    private final int radiu1;
+    // point0的半径
     private int radiu0;
+
+    private final Paint paint;
     private final Paint paint2;
+    private final Paint textPaint;
+    private final Path path;
 
-    private Paint paint;
-    private Paint textPaint;
-    private Path path;
-
+    //
     private Point point0;
     private Point point1;
 
@@ -34,12 +42,14 @@ public class View1 extends View {
     private Point point4;
     private Point point5;
 
+    // point1和point的0的长度
     private double mWidth;
     // 阻力
     private int resistance;
 
-    private boolean _isTouchIn;
-    private boolean _isTouchOut;
+    private boolean _isAnimStart; // 回弹是否开始
+    private boolean _isTouchIn; // 接触点是否是point0
+    private boolean _isOut; // 红点消失
 
     public View1(Context context) {
         this(context, null);
@@ -62,11 +72,11 @@ public class View1 extends View {
         point0 = new Point(50, 50);
         point1 = new Point();
 
-        // point0对应的点
+        // point0对应的点,计算Path的quadTo用
         point2 = new Point();
         point3 = new Point();
 
-        // point1对应的点
+        // point1对应的点,计算Path的quadTo用
         point4 = new Point();
         point5 = new Point();
 
@@ -83,7 +93,9 @@ public class View1 extends View {
         textPaint = new Paint();
         textPaint.setColor(Color.WHITE);
         textPaint.setAntiAlias(true);
-        textPaint.setTextSize(16);
+        textPaint.setTextSize(14);
+        Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
+        textPaint.setTypeface(font);
 
         path = new Path();
     }
@@ -95,10 +107,9 @@ public class View1 extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-
-        if (point1.x != 0 && point1.y != 0) {
-            resetPoint();
-            if (!_isTouchOut) {
+        if (point1.x != 0 && point1.y != 0) { // 如果point1的xy有值
+            resetPoint(); // 重新计算每个点
+            if (!_isOut) { // 超出拖拽的最大距离，不用绘制贝塞尔曲线
                 canvas.drawCircle(point2.x, point2.y, 2, paint2);
                 canvas.drawCircle(point3.x, point3.y, 2, paint2);
                 canvas.drawCircle(point4.x, point4.y, 2, paint2);
@@ -115,13 +126,20 @@ public class View1 extends View {
             }
 
             canvas.drawCircle(point1.x, point1.y, radiu1, paint);
-            String num = "11";
-            int textWidth = (int) textPaint.measureText(num);
-            canvas.drawText(num, point1.x - textWidth / 2, point1.y + 12 / 2, textPaint);
+            if (!_isAnimStart) {
+                String num = "11";
+                int textWidth = (int) textPaint.measureText(num);
+                canvas.drawText(num, point1.x - textWidth / 2, point1.y + 10 / 2, textPaint);
+            }
         }
 
-        if (!_isTouchOut) {
+        if (!_isOut) {
             canvas.drawCircle(point0.x, point0.y, radiu0, paint);
+        }
+        if (!_isTouchIn && !_isAnimStart) {
+            String num = "11";
+            int textWidth = (int) textPaint.measureText(num);
+            canvas.drawText(num, point0.x - textWidth / 2, point0.y + 10 / 2, textPaint);
         }
     }
 
@@ -141,13 +159,13 @@ public class View1 extends View {
      * point5:
      * x5 = x1 - r * sina;
      * y5 = y1 + r * sina;
-     * 重新绘制点
+     * 重新计算每个点
      */
     private void resetPoint() {
         double a = Math.atan((point1.y - point0.y) * 1F / (point1.x - point0.x));
 
         mWidth = Math.abs((point1.y - point0.y) / Math.sin(a));
-        radiu0 = (radiu1 - mWidth / resistance) < 5 ? 5 : (int) (radiu1 - mWidth / resistance);
+        radiu0 = (radiu1 - mWidth / resistance) < 4 ? 4 : (int) (radiu1 - mWidth / resistance);
         point2.x = (int) (point0.x + radiu0 * Math.sin(a));
         point2.y = (int) (point0.y - radiu0 * Math.cos(a));
 
@@ -160,7 +178,7 @@ public class View1 extends View {
         point5.x = (int) (point1.x - radiu1 * Math.sin(a));
         point5.y = (int) (point1.y + radiu1 * Math.cos(a));
         if ((radiu1 - mWidth / resistance) < 3) {
-            _isTouchOut = true;
+            _isOut = true;
         }
     }
 
@@ -171,8 +189,6 @@ public class View1 extends View {
                 float x = event.getX() - point0.x;
                 float y = event.getY() - point0.y;
                 if (Math.abs(x) <= 10 && Math.abs(y) <= 10) {
-                    event.setAction(MotionEvent.ACTION_MOVE);
-                    onTouchEvent(event);
                     _isTouchIn = true;
                 }
                 break;
@@ -183,18 +199,55 @@ public class View1 extends View {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (_isTouchIn) {
-                    _isTouchIn = false;
-                    _isTouchOut = false;
-                    mWidth = 0;
-                    radiu0 = radiu1;
+                if (!_isOut) {
+                    startResetAnim();
+                } else {
                     point1.set(0, 0);
-                    path.reset();
                     postInvalidate();
                 }
                 break;
         }
-
         return super.onTouchEvent(event);
+    }
+
+    private void startResetAnim() {
+        _isAnimStart = true;
+        ValueAnimator animatorX = ValueAnimator.ofInt(point1.x, point0.x);
+        animatorX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                point1.x = (int) animation.getAnimatedValue();
+                postInvalidate();
+            }
+        });
+        ValueAnimator animatorY = ValueAnimator.ofInt(point1.y, point0.y);
+        animatorY.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                point1.y = (int) animation.getAnimatedValue();
+                postInvalidate();
+            }
+        });
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(animatorX, animatorY);
+        animatorSet.setInterpolator(new OvershootInterpolator());
+        animatorSet.start();
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                reset();
+            }
+        });
+    }
+
+    public void reset() {
+        _isTouchIn = false;
+        _isOut = false;
+        _isAnimStart = false;
+        mWidth = 0;
+        radiu0 = radiu1;
+        point1.set(0, 0);
+        path.reset();
+        postInvalidate();
     }
 }
