@@ -40,7 +40,7 @@ public class View2 extends View {
         mWidth = bitmap.getWidth();
         mHeight = bitmap.getHeight();
     }
-    
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -78,7 +78,7 @@ public class View2 extends View {
         if (specMode == MeasureSpec.EXACTLY) {
             result = specSize;
         } else {
-            result = mWidth * 7; //如果是wrap_content ,给个初始值
+            result = mWidth + mHeight * 7; //如果是wrap_content ,给个初始值
             if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);
             }
