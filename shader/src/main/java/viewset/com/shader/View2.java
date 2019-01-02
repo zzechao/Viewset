@@ -5,8 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.support.annotation.Nullable;
@@ -18,6 +20,9 @@ public class View2 extends View {
     private Paint paint;
     private int mWidth;
     private int mHeight;
+    private Paint paintT;
+    private BitmapShader shader;
+    private int min;
 
     public View2(Context context) {
         this(context, null);
@@ -37,6 +42,11 @@ public class View2 extends View {
         bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.li);
         paint = new Paint();
         paint.setAntiAlias(true);
+
+        paintT = new Paint();
+        paintT.setColor(Color.WHITE);
+        paintT.setStrokeWidth(1);
+
         mWidth = bitmap.getWidth();
         mHeight = bitmap.getHeight();
     }
@@ -95,11 +105,25 @@ public class View2 extends View {
 
         canvas.translate(bitmap.getWidth(), 0);
 
-        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        min = Math.min(bitmap.getWidth(), bitmap.getHeight());
+        float scale = min * 1f / bitmap.getWidth();
         Matrix matrix = new Matrix();
-        matrix.setTranslate(100, 100);
+        //matrix.setScale(scale, scale);
         shader.getLocalMatrix(matrix);
         paint.setShader(shader);
-        canvas.drawCircle(50, 50, 20, paint);
+        canvas.drawBitmap(bitmap, null, new RectF(0, (min - (bitmap.getHeight() * scale)) / 2, min, bitmap.getHeight() * scale + (min - (bitmap.getHeight() * scale)) / 2), paint);
+
+        canvas.drawLine(0, 0, 0, bitmap.getHeight(), paintT);
+        canvas.translate(min, 0);
+
+        shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        min = Math.min(bitmap.getWidth(), bitmap.getHeight());
+        float m = (bitmap.getWidth() - min) / 2f;
+        paint.setShader(shader);
+        canvas.drawBitmap(bitmap, new Rect((int) m, 0, (int) m + min, bitmap.getHeight()), new RectF(0, 0, min, min), paint);
+
+        canvas.drawLine(0, 0, 0, bitmap.getHeight(), paintT);
+        canvas.translate(min, 0);
     }
 }
