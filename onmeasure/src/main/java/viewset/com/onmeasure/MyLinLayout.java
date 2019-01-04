@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,7 +27,8 @@ public class MyLinLayout extends ViewGroup {
 
         panit = new Paint();
         panit.setAntiAlias(true);
-        panit.setColor(Color.BLACK);
+        panit.setColor(Color.GREEN);
+        panit.setStyle(Paint.Style.FILL_AND_STROKE);
         panit.setStrokeWidth(2);
     }
 
@@ -75,7 +75,7 @@ public class MyLinLayout extends ViewGroup {
 
             top += childHeight + lp.topMargin + lp.bottomMargin;
 
-            Log.e("ttt", top + "---onLayout");
+            //Log.e("ttt", top + "---onLayout");
         }
     }
 
@@ -89,18 +89,14 @@ public class MyLinLayout extends ViewGroup {
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
 
-
             View child = getChildAt(i);
 
             int childHeight = child.getMeasuredHeight();
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
             top += childHeight + lp.topMargin + lp.bottomMargin;
 
-            Log.e("ttt", top + "---dispatchDraw");
-
-            canvas.translate(0, top);
-            canvas.drawLine(10, 0, getWidth() - 10, 0, panit);
-            canvas.restoreToCount(layoutInt);
+            canvas.drawLine(10, top, getWidth() - 10, top, panit);
+            canvas.drawCircle(20, top, 10, panit);
         }
 
         canvas.restoreToCount(layoutInt);

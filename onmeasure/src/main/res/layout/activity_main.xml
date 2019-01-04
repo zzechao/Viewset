@@ -28,31 +28,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="#0000ff"
+        android:background="#006677"
         android:padding="10dp"
         android:text="第三个VIEW" />
 
-    <viewset.com.onmeasure.FlowLayout
-        android:id="@+id/fl"
-        android:layout_width="match_parent"
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="5dp"-->
-            <!--android:background="@drawable/shape_bg_layerlist_selecter"-->
-            <!--android:padding="5dp"-->
-            <!--android:text="第一个VIEW" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="5dp"-->
-            <!--android:background="@drawable/shape_bg_layerlist_selecter"-->
-            <!--android:padding="5dp"-->
-            <!--android:text="第二个VIEW" />-->
-
-    </viewset.com.onmeasure.FlowLayout>
-
+        <viewset.com.onmeasure.FlowLayout
+            android:id="@+id/fl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </android.support.v4.widget.NestedScrollView>
 </viewset.com.onmeasure.MyLinLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,13 +49,22 @@ public class FlowLayout extends ViewGroup {
             int childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
             int childWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
             //得到最大宽度，并且累加高度
-            width += childWidth;
-            height += childHeight;
-            if (i > 0) {
-                if (width < measureWidth) {
-                    height -= childHeight;
+            if (measureWidthMode == MeasureSpec.EXACTLY) {
+                width += childWidth;
+                height += childHeight;
+                if (i > 0) {
+                    if (width < measureWidth) {
+                        height -= childHeight;
+                    } else {
+                        width = 0;
+                        width += childWidth;
+                    }
                 }
+            } else if (measureWidthMode == MeasureSpec.AT_MOST) {
+                width = Math.max(width, childWidth);
+                height += childHeight;
             }
+            Log.e("ttt", "height=" + height);
         }
 
         setMeasuredDimension((measureWidthMode == MeasureSpec.EXACTLY) ? measureWidth : width, (measureHeightMode == MeasureSpec.EXACTLY) ? measureHeight : height);
@@ -81,9 +91,11 @@ public class FlowLayout extends ViewGroup {
             int childWidth = child.getMeasuredWidth();
 
             width += lp.leftMargin + childWidth + lp.rightMargin;
+            //Log.e("ttt", "width = " + width + " measuredWidth =" + getMeasuredWidth());
             if (width > getMeasuredWidth()) {
                 offLeft = 0;
                 width = 0;
+                width += lp.leftMargin + childWidth + lp.rightMargin;
                 offTop += lp.topMargin + childHeight + lp.bottomMargin;
             }
 
