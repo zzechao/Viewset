@@ -65,6 +65,23 @@ public class WaterFallLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
+        int width = 0;
+
+        int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            View child = getChildAt(i);
+            LayoutParams lp = (LayoutParams) child.getLayoutParams();
+
+            int childWidth = child.getMeasuredWidth();
+            int childHeight = child.getMeasuredHeight();
+
+            width = Math.max(childWidth, width);
+
+            int to = 0;
+            for (int j = 0; j < columns; j++) {
+                to = Math.min(top[j], to);
+            }
+        }
     }
 
     public void addImage(int imgR) {
@@ -77,6 +94,7 @@ public class WaterFallLayout extends ViewGroup {
         lp.rightMargin = vSpace;
         imageView.setLayoutParams(lp);
         addView(imageView);
+        requestLayout();
     }
 
     @Override
