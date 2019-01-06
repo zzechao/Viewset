@@ -4,12 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-public class WaterFallLayout extends ViewGroup {
+public class WaterFallLayout2 extends ViewGroup {
     private int columns = 3;
     private int hSpace = 5;
     private int vSpace = 5;
@@ -17,15 +16,15 @@ public class WaterFallLayout extends ViewGroup {
     private int top[];
 
 
-    public WaterFallLayout(Context context) {
+    public WaterFallLayout2(Context context) {
         this(context, null);
     }
 
-    public WaterFallLayout(Context context, AttributeSet attrs) {
+    public WaterFallLayout2(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public WaterFallLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public WaterFallLayout2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         top = new int[columns];
     }
@@ -132,6 +131,11 @@ public class WaterFallLayout extends ViewGroup {
     }
 
     private static class LayoutParams extends MarginLayoutParams {
+        public int left;
+        public int top;
+        public int right;
+        public int bottom;
+
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
         }

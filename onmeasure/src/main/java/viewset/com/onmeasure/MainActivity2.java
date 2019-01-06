@@ -16,11 +16,11 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        final Random random = new Random(4);
+        final Random random = new Random();
         findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int p = random.nextInt() - 1;
+                int p = random.nextInt(3);
                 int img = imgs[p];
                 wfl.addImage(img);
             }
