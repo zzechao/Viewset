@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/drawpath" />
             <option value="$PROJECT_DIR$/onmeasure" />
             <option value="$PROJECT_DIR$/paintcanvas" />
+            <option value="$PROJECT_DIR$/pullscrollview" />
             <option value="$PROJECT_DIR$/qqpoint" />
             <option value="$PROJECT_DIR$/shader" />
           </set>

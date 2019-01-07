@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <viewset.com.onmeasure.WaterFallLayout
+        <viewset.com.onmeasure.WaterFallLayout2
             android:id="@+id/wfl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

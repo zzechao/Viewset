@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/zhouzechao/project/Viewset/blogObjectAnimator1/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+            "outputFile": "/Users/SouthTV/StudioProjects/Viewset/blogObjectAnimator1/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
             "map": [
                 {
-                    "source": "/Users/zhouzechao/project/Viewset/blogObjectAnimator1/src/main/res/values/strings.xml",
+                    "source": "/Users/SouthTV/StudioProjects/Viewset/blogObjectAnimator1/src/main/res/values/strings.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

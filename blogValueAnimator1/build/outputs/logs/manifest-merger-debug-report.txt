@@ -1,47 +1,47 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:2:1-18:12
-INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:2:1-18:12
-INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:2:1-18:12
+ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:2:1-18:12
+INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:2:1-18:12
+INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:2:1-18:12
 	package
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:3:11-37
-		INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
-		INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:3:11-37
+		INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+		INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:2:11-69
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:2:11-69
 application
-ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:6:5-17:19
+ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:6:5-17:19
 	android:label
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:7:13-45
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:7:13-45
 	android:icon
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:8:13-49
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:8:13-49
 activity#com.harvic.myapp.MyActivity
-ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:9:9-16:20
+ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:9:9-16:20
 	android:label
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:11:17-49
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:11:17-49
 	android:name
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:10:17-42
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:10:17-42
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:12:13-15:29
+ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:12:13-15:29
 action#android.intent.action.MAIN
-ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:13:17-68
+ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:13:17-68
 	android:name
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:13:25-66
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:13:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:14:17-76
+ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:14:17-76
 	android:name
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:14:27-74
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml:14:27-74
 uses-sdk
-INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
-INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
-INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
-INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
-		INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+		INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+		INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
-		ADDED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
-		INJECTED from /Users/zhouzechao/project/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+		INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+		ADDED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml
+		INJECTED from /Users/SouthTV/StudioProjects/Viewset/blogValueAnimator1/src/main/AndroidManifest.xml

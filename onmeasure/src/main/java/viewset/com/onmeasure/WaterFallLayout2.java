@@ -10,10 +10,11 @@ import android.widget.ImageView;
 
 public class WaterFallLayout2 extends ViewGroup {
     private int columns = 3;
-    private int hSpace = 5;
-    private int vSpace = 5;
+    private int hSpace = 20;
+    private int vSpace = 20;
     private int childWidth = 0;
     private int top[];
+    private OnItemClick mItemClick;
 
 
     public WaterFallLayout2(Context context) {
@@ -54,6 +55,7 @@ public class WaterFallLayout2 extends ViewGroup {
 
             width = Math.max(childWidth, width);
 
+
             int t = top[0];
             int z = 0;
             for (int j = columns - 1; j >= 0; j--) {
@@ -62,45 +64,38 @@ public class WaterFallLayout2 extends ViewGroup {
                     z = j;
                 }
             }
-            height = t + childHeight + hSpace;
-            top[z] = height;
+            int h = t + childHeight + hSpace;
+            top[z] = h;
+
+            // 计算出对应imageview的left、top、right、bottom
+            lp.left = z * (childWidth + vSpace);
+            lp.top = t + hSpace;
+            lp.right = lp.left + childWidth;
+            lp.bottom = lp.top + childHeight;
+
+            // 计算出最大的height
+            height = Math.max(lp.bottom, height);
         }
-        for (int he : top) {
-            height = Math.max(he, height);
-        }
-        top = new int[columns];
         setMeasuredDimension((widthMode == MeasureSpec.EXACTLY) ? measureWidth : width, (heightMode == MeasureSpec.EXACTLY) ? measureHeight : height);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
-        int width = 0;
-
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            child.layout(lp.left, lp.top, lp.right, lp.bottom);
 
-            int childWidth = child.getMeasuredWidth();
-            int childHeight = child.getMeasuredHeight();
-
-            width = Math.max(childWidth, width);
-
-            int to = top[0];
-            int z = 0;
-            for (int j = columns - 1; j >= 0; j--) {
-                if (top[j] <= to) {
-                    to = top[j];
-                    z = j;
+            final int finalI = i;
+            child.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mItemClick != null) {
+                        mItemClick.itemClick(finalI + 1);
+                    }
                 }
-            }
-            int childLeft = z * (childWidth + vSpace);
-            int childTop = to + hSpace;
-            int childRight = childLeft + childWidth;
-            int childBottom = childTop + childHeight;
-            child.layout(childLeft, childTop, childRight, childBottom);
-            top[z] = to + childHeight + hSpace;
+            });
         }
     }
 
@@ -110,10 +105,12 @@ public class WaterFallLayout2 extends ViewGroup {
         imageView.setImageResource(imgR);
         LayoutParams lp = new LayoutParams(childWidth, (int) ((childWidth * 1F / bitmap.getWidth()) * bitmap.getHeight()));
         imageView.setLayoutParams(lp);
+        imageView.setClickable(true);
         addView(imageView);
         top = new int[columns];
         requestLayout();
     }
+
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -128,6 +125,14 @@ public class WaterFallLayout2 extends ViewGroup {
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    public interface OnItemClick {
+        void itemClick(int position);
+    }
+
+    public void setOnItemClick(final OnItemClick itemClick) {
+        mItemClick = itemClick;
     }
 
     private static class LayoutParams extends MarginLayoutParams {
