@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -11,12 +12,17 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     TableLayout mMainLayout;
+    private ImageView background_img;
+    private PullScrollView plv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mMainLayout = findViewById(R.id.table_layout);
+        background_img = findViewById(R.id.background_img);
+        plv = findViewById(R.id.plv);
+        plv.setScaleView(background_img);
 
         showTable();
     }
