@@ -28,6 +28,8 @@ public class Decoration1Activity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
+        mRecyclerView.addItemDecoration(new LinearItemDecoration1());
+
         RecyclerAdapter adapter = new RecyclerAdapter(this, mDatas);
         mRecyclerView.setAdapter(adapter);
     }
