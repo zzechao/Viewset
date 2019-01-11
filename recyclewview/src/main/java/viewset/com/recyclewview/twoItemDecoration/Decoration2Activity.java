@@ -1,7 +1,6 @@
 package viewset.com.recyclewview.twoItemDecoration;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,9 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 
 import viewset.com.recyclewview.R;
-import viewset.com.recyclewview.one.RecyclerAdapter;
 
-public class Decoration1Activity extends AppCompatActivity {
+public class Decoration2Activity extends AppCompatActivity {
 
     private ArrayList<String> mDatas = new ArrayList<>();
 
@@ -29,18 +27,11 @@ public class Decoration1Activity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mRecyclerView.addItemDecoration(new LinearItemDecoration1(this));
+        LinearItemDecoration2 linearItemDecoration2 = new LinearItemDecoration2(this);
+        mRecyclerView.addItemDecoration(linearItemDecoration2);
 
-        RecyclerAdapter adapter = new RecyclerAdapter(this, mDatas);
+        RecyclerAdapter2 adapter = new RecyclerAdapter2(this, mDatas);
         mRecyclerView.setAdapter(adapter);
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-            }
-        });
     }
 
     @Override

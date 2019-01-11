@@ -1,4 +1,4 @@
-package viewset.com.recyclewview.one;
+package viewset.com.recyclewview.twoItemDecoration;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import static android.support.v7.widget.RecyclerView.Adapter;
 import static android.support.v7.widget.RecyclerView.OnClickListener;
 import static android.support.v7.widget.RecyclerView.ViewHolder;
 
-public class RecyclerAdapter extends Adapter<ViewHolder> {
+public class RecyclerAdapter2 extends Adapter<ViewHolder> {
 
     private Context mContext;
     private ArrayList<String> mDatas;
@@ -27,7 +27,7 @@ public class RecyclerAdapter extends Adapter<ViewHolder> {
 
     private int M_SECTION_ITEM_NUM = 10;
 
-    public RecyclerAdapter(Context context, ArrayList<String> datas) {
+    public RecyclerAdapter2(Context context, ArrayList<String> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -59,9 +59,6 @@ public class RecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (position % M_SECTION_ITEM_NUM == 0) {
-            return ITEM_TYPE.ITEM_TYPE_SECTION.ordinal();
-        }
         return ITEM_TYPE.ITEM_TYPE_ITEM.ordinal();
     }
 

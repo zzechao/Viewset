@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.Button;
 
 import viewset.com.recyclewview.R;
-import viewset.com.recyclewview.one.GridActivity;
-import viewset.com.recyclewview.one.StaggeredActivity;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -17,35 +15,23 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        Button bt1 = (Button)findViewById(R.id.item_decoration1);
-        Button gridBtn = (Button)findViewById(R.id.grid_activity_btn);
-        Button staggerBtn = (Button)findViewById(R.id.stagger_activity_btn);
-
+        Button bt1 = findViewById(R.id.item_decoration1);
+        Button bt2 = findViewById(R.id.item_decoration2);
 
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity2.this,Decoration1Activity.class);
+                Intent intent = new Intent(MainActivity2.this, Decoration1Activity.class);
                 startActivity(intent);
             }
         });
 
-        gridBtn.setOnClickListener(new View.OnClickListener() {
+        bt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity2.this,GridActivity.class);
+                Intent intent = new Intent(MainActivity2.this, Decoration2Activity.class);
                 startActivity(intent);
             }
         });
-
-        staggerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity2.this,StaggeredActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
     }
 }
