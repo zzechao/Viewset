@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import viewset.com.recyclewview.one.MainActivity1;
+import viewset.com.recyclewview.threeLayoutManager.MainActivity3;
 import viewset.com.recyclewview.twoItemDecoration.MainActivity2;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.bt_3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity3.class);
                 startActivity(intent);
             }
         });

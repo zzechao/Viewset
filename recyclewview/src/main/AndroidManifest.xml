@@ -46,6 +46,14 @@
         <activity
             android:name=".twoItemDecoration.Decoration2Activity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".threeLayoutManager.MainActivity3"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".threeLayoutManager.LayoutManager1Activity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,7 +1,6 @@
 package viewset.com.recyclewview.twoItemDecoration;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,14 +32,6 @@ public class Decoration1Activity extends AppCompatActivity {
 
         RecyclerAdapter adapter = new RecyclerAdapter(this, mDatas);
         mRecyclerView.setAdapter(adapter);
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-            }
-        });
     }
 
     @Override

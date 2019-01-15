@@ -6,24 +6,18 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/bt_1"
+        android:id="@+id/item_layoutmanager1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="Use" />
+        android:text="layoutmanager1" />
+
 
     <Button
-        android:id="@+id/bt_2"
+        android:id="@+id/item_layoutmanager2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="ItemDecoration" />
-
-    <Button
-        android:id="@+id/bt_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="LayoutManager" />
+        android:text="layoutmanager2" />
 
 </LinearLayout>
