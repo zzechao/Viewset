@@ -19,6 +19,7 @@ public class RecyclerAdapter extends Adapter<ViewHolder> {
 
     private Context mContext;
     private ArrayList<String> mDatas;
+    private int mCreatedHolder;
 
     public static enum ITEM_TYPE {
         ITEM_TYPE_SECTION,
@@ -34,6 +35,7 @@ public class RecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mCreatedHolder++;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         if (viewType == ITEM_TYPE.ITEM_TYPE_ITEM.ordinal()) {
             return new NormalHolder(inflater.inflate(R.layout.item_layout, parent, false));
