@@ -101,19 +101,41 @@ public class LinearItemDecoration2 extends RecyclerView.ItemDecoration {
         int right = parent.getWidth() - parent.getPaddingRight();
         int parentWidth = parent.getMeasuredWidth();
 
-        canvas.drawRect(left, 0, right, mTopHeight, paint);
-
-        String groupName = getGroupName(pos);
+        // 文字
         float textLeft = left + parentWidth / 2;
         float distance = (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom;
         float textBottom = mTopHeight / 2 + distance;
-        canvas.drawText(groupName, textLeft, textBottom, paintT);
 
         // jiang图片的设置
         float bitLeft = left;
         float bitTop = mTopHeight / 2 - mMedalBmp.getHeight() / 2;
+
+        String groupName = getGroupName(pos);
+
+        //此处开始不同
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            //判断item是不是该组的最后一个元素
+            if (isLastInGroup(pos)) {
+                int bottom = child.getBottom();
+                //滑动过程中，若分组中最后一个item的bottom小于label的高度，就把label的绘制位置往上提。
+                if (bottom <= mTopHeight) {
+                    canvas.drawRect(left, 0, right, bottom, paint);
+                    textBottom = textBottom - (mTopHeight - bottom);
+                    canvas.drawText(groupName, textLeft, textBottom, paintT);
+                    bitTop = bitTop - (mTopHeight - bottom);
+                    canvas.drawBitmap(mMedalBmp, bitLeft, bitTop, paint);
+                    return;
+                }
+            }
+        }
+
+
+        canvas.drawRect(left, 0, right, mTopHeight, paint);
+        canvas.drawText(groupName, textLeft, textBottom, paintT);
         canvas.drawBitmap(mMedalBmp, bitLeft, bitTop, paint);
     }
+
 
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -135,6 +157,16 @@ public class LinearItemDecoration2 extends RecyclerView.ItemDecoration {
      */
     private boolean isFirstInGroup(int pos) {
         return pos == 0 || pos % 10 == 0;
+    }
+
+    /**
+     * 判断是否最后一个
+     *
+     * @param pos
+     * @return
+     */
+    private boolean isLastInGroup(int pos) {
+        return (pos / 10) != ((pos + 1) / 10);
     }
 
     /**

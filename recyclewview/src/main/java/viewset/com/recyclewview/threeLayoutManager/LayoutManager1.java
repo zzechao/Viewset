@@ -7,6 +7,9 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * https://blog.csdn.net/zxt0601/article/details/52948009
+ */
 public class LayoutManager1 extends RecyclerView.LayoutManager {
     private int mSumDy;
 
@@ -16,7 +19,7 @@ public class LayoutManager1 extends RecyclerView.LayoutManager {
 
     @Override
     public RecyclerView.LayoutParams generateDefaultLayoutParams() {
-        return new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        return new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     @Override
