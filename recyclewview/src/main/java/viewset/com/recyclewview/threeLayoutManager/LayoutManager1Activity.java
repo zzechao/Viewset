@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 
 import viewset.com.recyclewview.R;
-import viewset.com.recyclewview.one.RecyclerAdapter;
 import viewset.com.recyclewview.twoItemDecoration.LinearItemDecoration1;
 
 public class LayoutManager1Activity extends AppCompatActivity {
@@ -27,7 +26,7 @@ public class LayoutManager1Activity extends AppCompatActivity {
 
         mRecyclerView.addItemDecoration(new LinearItemDecoration1(this));
 
-        RecyclerAdapter adapter = new RecyclerAdapter(this, mDatas);
+        RecyclerAdapter3 adapter = new RecyclerAdapter3(this, mDatas);
         mRecyclerView.setAdapter(adapter);
     }
 

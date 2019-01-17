@@ -1,4 +1,4 @@
-package viewset.com.recyclewview.one;
+package viewset.com.recyclewview.threeLayoutManager;
 
 import android.content.Context;
 import android.util.Log;
@@ -16,7 +16,7 @@ import static android.support.v7.widget.RecyclerView.Adapter;
 import static android.support.v7.widget.RecyclerView.OnClickListener;
 import static android.support.v7.widget.RecyclerView.ViewHolder;
 
-public class RecyclerAdapter extends Adapter<ViewHolder> {
+public class RecyclerAdapter3 extends Adapter<ViewHolder> {
 
     private Context mContext;
     private ArrayList<String> mDatas;
@@ -29,7 +29,7 @@ public class RecyclerAdapter extends Adapter<ViewHolder> {
 
     private int M_SECTION_ITEM_NUM = 10;
 
-    public RecyclerAdapter(Context context, ArrayList<String> datas) {
+    public RecyclerAdapter3(Context context, ArrayList<String> datas) {
         mContext = context;
         mDatas = datas;
     }

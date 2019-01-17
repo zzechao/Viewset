@@ -1,6 +1,7 @@
 package viewset.com.recyclewview.twoItemDecoration;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
 
     private Context mContext;
     private ArrayList<String> mDatas;
+    private int mCreatedHolder;
 
     public static enum ITEM_TYPE {
         ITEM_TYPE_SECTION,
@@ -34,6 +36,8 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.e("ttt", "onCreateViewHolder" + mCreatedHolder);
+        mCreatedHolder++;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         if (viewType == ITEM_TYPE.ITEM_TYPE_ITEM.ordinal()) {
             return new NormalHolder(inflater.inflate(R.layout.item_layout, parent, false));
@@ -43,6 +47,7 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.e("ttt", "onBindViewHolder");
         if (holder instanceof SectionHolder) {
             SectionHolder sectionHolder = (SectionHolder) holder;
             sectionHolder.mSectionTv.setText("第 " + position / M_SECTION_ITEM_NUM + " 组");
