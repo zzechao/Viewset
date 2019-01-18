@@ -9,12 +9,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 
 import viewset.com.recyclewview.R;
 import viewset.com.recyclewview.one.RecyclerAdapter;
 
-public class LinearItemDecoration1 extends RecyclerView.ItemDecoration {
+public class LinearItemDecoration1 extends RecyclerView.ItemDecoration implements View.OnTouchListener {
 
     private final Bitmap mMedalBmp;
     Paint paint;
@@ -66,16 +67,19 @@ public class LinearItemDecoration1 extends RecyclerView.ItemDecoration {
                 canvas.drawBitmap(mMedalBmp, left - mMedalBmp.getWidth() / 2, child.getTop() + child.getHeight() / 2 - mMedalBmp.getHeight() / 2, paint);
             }
         }
-
-
     }
+
+
 
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         outRect.top = 1;
         outRect.left = 100;
-        outRect.right = 50;
+    }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
     }
 }

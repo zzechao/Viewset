@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ * https://kymjs.com/code/2016/07/10/01/
  * https://blog.csdn.net/zxt0601/article/details/52948009
  */
 public class LayoutManager1 extends RecyclerView.LayoutManager {

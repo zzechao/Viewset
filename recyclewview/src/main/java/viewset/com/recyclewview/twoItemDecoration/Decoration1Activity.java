@@ -28,7 +28,9 @@ public class Decoration1Activity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mRecyclerView.addItemDecoration(new LinearItemDecoration1(this));
+        LinearItemDecoration1 itemDecoration1 = new LinearItemDecoration1(this);
+        mRecyclerView.setOnTouchListener(itemDecoration1);
+        mRecyclerView.addItemDecoration(itemDecoration1);
 
         RecyclerAdapter adapter = new RecyclerAdapter(this, mDatas);
         mRecyclerView.setAdapter(adapter);
