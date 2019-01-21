@@ -2,6 +2,7 @@ package viewset.com.recyclewview.threeLayoutManager;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import android.view.ViewGroup;
  * https://kymjs.com/code/2016/07/10/01/
  * https://blog.csdn.net/zxt0601/article/details/52948009
  */
-public class LayoutManager1 extends RecyclerView.LayoutManager {
+public class LayoutManager3 extends RecyclerView.LayoutManager {
     private int mSumDy;
 
     private SparseArray<Rect> mItemRects = new SparseArray<>();
@@ -28,7 +29,7 @@ public class LayoutManager1 extends RecyclerView.LayoutManager {
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         //super.onLayoutChildren(recycler, state);
         if (getItemCount() == 0) {//没有Item，界面空着吧
-            removeAndRecycleAllViews(recycler);
+            detachAndScrapAttachedViews(recycler);
             return;
         }
         detachAndScrapAttachedViews(recycler);
@@ -74,6 +75,7 @@ public class LayoutManager1 extends RecyclerView.LayoutManager {
 
     @Override
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
+        Log.e("ttt", dy + "----");
         int travel = dy;
         //如果滑动到最顶部
         if (mSumDy + dy < 0) {
@@ -82,27 +84,23 @@ public class LayoutManager1 extends RecyclerView.LayoutManager {
             travel = mTotalHeight - getVerticalSpace() - mSumDy;
         }
 
+        Rect visibleRect = getVisibleArea(travel);
         for (int i = getChildCount() - 1; i >= 0; i--) {
             View child = getChildAt(i);
-            if (travel > 0) {//需要回收当前屏幕，上越界的View
-                if (getDecoratedBottom(child) - travel < 0) {
-                    removeAndRecycleView(child, recycler);
-                    continue;
-                }
-            } else if (travel < 0) {//回收当前屏幕，下越界的View
-                if (getDecoratedTop(child) - travel > getHeight() - getPaddingBottom()) {
-                    removeAndRecycleView(child, recycler);
-                    continue;
-                }
+            int position = getPosition(child);
+            Rect rect = mItemRects.get(position);
+
+            if (!Rect.intersects(rect, visibleRect)) {
+                removeAndRecycleView(child, recycler); // remove和回收超出屏幕的view
             }
         }
 
-        Rect visibleRect = getVisibleArea(travel);
+        View firstView = getChildAt(0);
+        View lastView = getChildAt(getChildCount() - 1);
+        detachAndScrapAttachedViews(recycler); // 全局的离屏缓存
         //布局子View阶段
         if (travel >= 0) {
-            View lastView = getChildAt(getChildCount() - 1);
-
-            int minPos = getPosition(lastView) + 1;//从最后一个View+1开始吧\
+            int minPos = getPosition(firstView);
             for (int i = minPos; i <= getItemCount() - 1; i++) {
                 Rect rect = mItemRects.get(i);
                 if (Rect.intersects(visibleRect, rect)) {
@@ -110,14 +108,14 @@ public class LayoutManager1 extends RecyclerView.LayoutManager {
                     addView(child);
                     measureChildWithMargins(child, 0, 0);
                     layoutDecorated(child, rect.left, rect.top - mSumDy, rect.right, rect.bottom - mSumDy);
+
+                    child.setRotationY((child.getRotationY() + 1) % 360);
                 } else {
                     break;
                 }
             }
         } else {
-            View firstView = getChildAt(0);
-            int maxPos = getPosition(firstView) - 1;
-
+            int maxPos = getPosition(lastView);
             for (int i = maxPos; i >= 0; i--) {
                 Rect rect = mItemRects.get(i);
                 if (Rect.intersects(visibleRect, rect)) {
@@ -125,6 +123,8 @@ public class LayoutManager1 extends RecyclerView.LayoutManager {
                     addView(child, 0);//将View添加至RecyclerView中，childIndex为1，但是View的位置还是由layout的位置决定
                     measureChildWithMargins(child, 0, 0);
                     layoutDecoratedWithMargins(child, rect.left, rect.top - mSumDy, rect.right, rect.bottom - mSumDy);
+
+                    child.setRotationY((child.getRotationY() - 1) % 360);
                 } else {
                     break;
                 }
@@ -132,8 +132,6 @@ public class LayoutManager1 extends RecyclerView.LayoutManager {
         }
 
         mSumDy += travel;
-        // 平移容器内的item
-        offsetChildrenVertical(-travel);
         return dy;
     }
 
