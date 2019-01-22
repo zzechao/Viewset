@@ -21,8 +21,8 @@ public class LayoutManager3Activity extends AppCompatActivity {
         generateDatas();
         final RecyclerView mRecyclerView = findViewById(R.id.linear_recycler_view);
 
-        LayoutManager2 layoutManager2 = new LayoutManager2();
-        mRecyclerView.setLayoutManager(layoutManager2);
+        LayoutManager3 layoutManager3 = new LayoutManager3();
+        mRecyclerView.setLayoutManager(layoutManager3);
 
         mRecyclerView.addItemDecoration(new LinearItemDecoration1(this));
 
