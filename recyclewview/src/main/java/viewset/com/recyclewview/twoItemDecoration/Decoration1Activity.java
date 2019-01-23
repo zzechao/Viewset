@@ -9,11 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 
 import viewset.com.recyclewview.R;
-import viewset.com.recyclewview.one.RecyclerAdapter;
 
 public class Decoration1Activity extends AppCompatActivity {
 
     private ArrayList<String> mDatas = new ArrayList<>();
+
+    private QQPointView qqPointView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,7 +22,11 @@ public class Decoration1Activity extends AppCompatActivity {
         setContentView(R.layout.activity_itemdecoration1);
 
         generateDatas();
-        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.linear_recycler_view);
+        final RecyclerView mRecyclerView = findViewById(R.id.linear_recycler_view);
+
+        qqPointView = new QQPointView(this);
+        qqPointView.setClickable(true);
+
 
         //线性布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -29,10 +34,9 @@ public class Decoration1Activity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         LinearItemDecoration1 itemDecoration1 = new LinearItemDecoration1(this);
-        mRecyclerView.setOnTouchListener(itemDecoration1);
         mRecyclerView.addItemDecoration(itemDecoration1);
 
-        RecyclerAdapter adapter = new RecyclerAdapter(this, mDatas);
+        RecyclerAdapter2 adapter = new RecyclerAdapter2(this, mDatas);
         mRecyclerView.setAdapter(adapter);
     }
 

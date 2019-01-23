@@ -6,35 +6,20 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 
 import viewset.com.recyclewview.R;
 import viewset.com.recyclewview.one.RecyclerAdapter;
 
-public class LinearItemDecoration1 extends RecyclerView.ItemDecoration implements View.OnTouchListener {
+public class LinearItemDecoration1 extends RecyclerView.ItemDecoration {
 
     private final Bitmap mMedalBmp;
     Paint paint;
     Paint qqPointPaint;
-
-    SparseArray<Point> qqPoints = new SparseArray<>();
-
-    private Point point0;
-    private Point point1;
-
-    private Point point2;
-    private Point point3;
-
-    private Point point4;
-    private Point point5;
-
-    private boolean _isTouchIn; // 接触点是否是point0
 
     public LinearItemDecoration1(Context context) {
         paint = new Paint();
@@ -47,7 +32,7 @@ public class LinearItemDecoration1 extends RecyclerView.ItemDecoration implement
         mMedalBmp = BitmapFactory.decodeResource(context.getResources(), R.mipmap.jiang, options);
 
         qqPointPaint = new Paint();
-        qqPointPaint.setColor(Color.RED);
+        qqPointPaint.setColor(Color.parseColor("#ffff4444"));
         qqPointPaint.setAntiAlias(true);
         qqPointPaint.setStyle(Paint.Style.FILL);
 
@@ -72,6 +57,7 @@ public class LinearItemDecoration1 extends RecyclerView.ItemDecoration implement
 
     @Override
     public void onDrawOver(@NonNull Canvas canvas, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+        Log.e("ttt", "--onDrawOver");
         super.onDrawOver(canvas, parent, state);
 
         int childCount = parent.getChildCount();
@@ -88,14 +74,11 @@ public class LinearItemDecoration1 extends RecyclerView.ItemDecoration implement
             if (parent.getAdapter().getItemViewType(position) == RecyclerAdapter.ITEM_TYPE.ITEM_TYPE_SECTION.ordinal()) {
                 canvas.drawBitmap(mMedalBmp, left - mMedalBmp.getWidth() / 2, child.getTop() + child.getHeight() / 2 - mMedalBmp.getHeight() / 2, paint);
             }
-
-            if (position % 5 == 0) {
-                int cx = child.getLeft() + child.getWidth() - 40;
-                int cy = child.getTop() + child.getHeight() / 2;
-                qqPoints.put(position, new Point(cx, cy));
-                canvas.drawCircle(cx, cy, 10, qqPointPaint);
-            }
         }
+
+//        if (_isTouchIn) {
+//            canvas.drawCircle(point1.x, point1.y, 10, qqPointPaint);
+//        }
     }
 
 
@@ -104,34 +87,5 @@ public class LinearItemDecoration1 extends RecyclerView.ItemDecoration implement
         super.getItemOffsets(outRect, view, parent, state);
         outRect.top = 1;
         outRect.left = 100;
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                float preX = event.getX(event.findPointerIndex(0));
-                float preY = event.getY(event.findPointerIndex(0));
-                for (int i = 0; i < qqPoints.size(); i++) {
-                    Point point = qqPoints.get(i);
-                    float x = preX - point.x;
-                    float y = preY - point.y;
-                    if (Math.abs(x) <= 10 && Math.abs(y) <= 10) {
-                        _isTouchIn = true;
-                    }
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (_isTouchIn) {
-                    point1.set((int) event.getX(event.findPointerIndex(0))
-                            , (int) event.getY(event.findPointerIndex(0)));
-                    postInvalidate();
-                }
-                break;
-        }
-        if (_isTouchIn) {
-            return true;
-        }
-        return false;
     }
 }

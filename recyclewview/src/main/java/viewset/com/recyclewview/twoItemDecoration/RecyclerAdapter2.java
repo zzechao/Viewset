@@ -1,7 +1,6 @@
 package viewset.com.recyclewview.twoItemDecoration;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +35,8 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.e("ttt", "onCreateViewHolder" + mCreatedHolder);
-        mCreatedHolder++;
+//        Log.e("ttt", "onCreateViewHolder" + mCreatedHolder);
+//        mCreatedHolder++;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         if (viewType == ITEM_TYPE.ITEM_TYPE_ITEM.ordinal()) {
             return new NormalHolder(inflater.inflate(R.layout.item_layout, parent, false));
@@ -47,13 +46,13 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.e("ttt", "onBindViewHolder");
+        //Log.e("ttt", "onBindViewHolder");
         if (holder instanceof SectionHolder) {
             SectionHolder sectionHolder = (SectionHolder) holder;
-            sectionHolder.mSectionTv.setText("第 " + position / M_SECTION_ITEM_NUM + " 组");
+            sectionHolder.mSectionTv.setText("第 " + position / M_SECTION_ITEM_NUM + "组");
         } else if (holder instanceof NormalHolder) {
             NormalHolder normalHolder = (NormalHolder) holder;
-            normalHolder.mTV.setText(mDatas.get(position));
+            normalHolder.mTV.setText(mDatas.get(position) + "大叔大叔大叔的大叔大叔大叔的蔷薇蔷薇");
         }
     }
 
@@ -64,6 +63,9 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+        if (position % M_SECTION_ITEM_NUM == 0) {
+            return ITEM_TYPE.ITEM_TYPE_SECTION.ordinal();
+        }
         return ITEM_TYPE.ITEM_TYPE_ITEM.ordinal();
     }
 
@@ -76,6 +78,7 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
 
     public class NormalHolder extends ViewHolder {
         public TextView mTV;
+        public TextView qqpoint;
 
         public NormalHolder(View itemView) {
             super(itemView);
@@ -87,7 +90,6 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
                     Toast.makeText(mContext, mTV.getText(), Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
     }
 
