@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-    <android.support.v7.widget.RecyclerView
+    <viewset.com.recyclewview.twoItemDecoration.QQPointRecyclerview
         android:id="@+id/linear_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:background="#ff0000">
 
-    </android.support.v7.widget.RecyclerView>
+    </viewset.com.recyclewview.twoItemDecoration.QQPointRecyclerview>
 
 </FrameLayout>

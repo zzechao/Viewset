@@ -16,9 +16,4 @@
         android:gravity="center"
         android:padding="10dp"
         android:singleLine="true" />
-
-    <viewset.com.recyclewview.twoItemDecoration.QQNumberView
-        android:id="@+id/qqpoint"
-        android:layout_width="20dp"
-        android:layout_height="20dp" />
 </LinearLayout>

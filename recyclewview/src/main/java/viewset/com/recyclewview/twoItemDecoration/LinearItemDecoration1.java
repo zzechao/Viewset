@@ -6,20 +6,39 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.View;
 
 import viewset.com.recyclewview.R;
 import viewset.com.recyclewview.one.RecyclerAdapter;
 
-public class LinearItemDecoration1 extends RecyclerView.ItemDecoration {
+public class LinearItemDecoration1 extends RecyclerView.ItemDecoration implements View.OnTouchListener {
 
     private final Bitmap mMedalBmp;
     Paint paint;
     Paint qqPointPaint;
+
+    SparseArray<Point> qqPoints = new SparseArray<>();
+
+    private int currentTouchPos = -1;
+    private Point point0 = new Point();
+    private Point point1 = new Point();
+
+    private Point point2 = new Point();
+    private Point point3 = new Point();
+
+    private Point point4 = new Point();
+    private Point point5 = new Point();
+
+    private boolean _isTouchIn; // 接触点是否是point0
+
+    private OnPointInListener onPointInListener;
 
     public LinearItemDecoration1(Context context) {
         paint = new Paint();
@@ -74,6 +93,20 @@ public class LinearItemDecoration1 extends RecyclerView.ItemDecoration {
             if (parent.getAdapter().getItemViewType(position) == RecyclerAdapter.ITEM_TYPE.ITEM_TYPE_SECTION.ordinal()) {
                 canvas.drawBitmap(mMedalBmp, left - mMedalBmp.getWidth() / 2, child.getTop() + child.getHeight() / 2 - mMedalBmp.getHeight() / 2, paint);
             }
+
+            if (position % 5 == 0) {
+                int cx = child.getLeft() + child.getWidth() - 40;
+                int cy = child.getTop() + child.getHeight() / 2;
+                Log.e("ttt", "--noset--" + currentTouchPos + "--" + position + "--_isTouchIn--" + _isTouchIn);
+                if (currentTouchPos == position && !_isTouchIn) {
+
+                    continue;
+                }
+                Log.e("ttt", "x0--" + point0.x + "--x--" + cx);
+                Log.e("ttt", "y0--" + point0.y + "--y--" + cy);
+                qqPoints.put(position, new Point(cx, cy));
+                canvas.drawCircle(cx, cy, 10, qqPointPaint);
+            }
         }
 
 //        if (_isTouchIn) {
@@ -87,5 +120,35 @@ public class LinearItemDecoration1 extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
         outRect.top = 1;
         outRect.left = 100;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+
+                break;
+//            case MotionEvent.ACTION_MOVE:
+//                if (_isTouchIn) {
+//                    point1.set((int) event.getX(event.findPointerIndex(0))
+//                            , (int) event.getY(event.findPointerIndex(0)));
+//                    v.postInvalidate();
+//                }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                _isTouchIn = false;
+//                point1.set(0, 0);
+//                v.postInvalidate();
+//                break;
+        }
+        return false;
+    }
+
+    public void setOnPointInListener(OnPointInListener onPointInListener) {
+        this.onPointInListener = onPointInListener;
+    }
+
+    public interface OnPointInListener {
+        void onPointIn(Point point);
     }
 }
