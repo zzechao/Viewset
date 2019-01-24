@@ -112,6 +112,11 @@ public class QQPointRecyclerview extends FrameLayout {
                             _isTouchIn = true;
                             currentTouchPos = qqPoints.keyAt(i);
                             point0.set(point.x, point.y);
+                            View child = rv.getLayoutManager().findViewByPosition(currentTouchPos);
+                            if (child != null) {
+                                RecyclerAdapter2.NormalHolder normalHolder = (RecyclerAdapter2.NormalHolder) rv.getChildViewHolder(child);
+                                normalHolder.qqpoint.setVisibility(INVISIBLE);
+                            }
                             //rv.getLayoutManager().get
                             break;
                         }
