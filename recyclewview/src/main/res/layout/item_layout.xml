@@ -13,7 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ellipsize="end"
-        android:gravity="center"
+        android:gravity="left"
         android:padding="10dp"
         android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/qqpoint"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/yuan" />
 </LinearLayout>

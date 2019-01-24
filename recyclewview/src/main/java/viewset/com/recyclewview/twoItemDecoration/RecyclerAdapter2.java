@@ -53,6 +53,9 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
         } else if (holder instanceof NormalHolder) {
             NormalHolder normalHolder = (NormalHolder) holder;
             normalHolder.mTV.setText(mDatas.get(position) + "大叔大叔大叔的大叔大叔大叔的蔷薇蔷薇");
+            if (position % 2 != 0) {
+                normalHolder.qqpoint.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -90,6 +93,8 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
                     Toast.makeText(mContext, mTV.getText(), Toast.LENGTH_SHORT).show();
                 }
             });
+
+            qqpoint = itemView.findViewById(R.id.qqpoint);
         }
     }
 

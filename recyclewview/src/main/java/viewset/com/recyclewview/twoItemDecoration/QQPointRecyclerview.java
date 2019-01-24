@@ -98,8 +98,8 @@ public class QQPointRecyclerview extends FrameLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        Log.e("ttt","dispatchTouchEvent--" + event.getAction());
-        switch (event.getAction()){
+        //Log.e("ttt", "dispatchTouchEvent--" + event.getAction());
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 float preX = event.getX(event.findPointerIndex(0));
                 float preY = event.getY(event.findPointerIndex(0));
@@ -112,7 +112,7 @@ public class QQPointRecyclerview extends FrameLayout {
                             _isTouchIn = true;
                             currentTouchPos = qqPoints.keyAt(i);
                             point0.set(point.x, point.y);
-
+                            //rv.getLayoutManager().get
                             break;
                         }
                     }
@@ -134,7 +134,7 @@ public class QQPointRecyclerview extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.e("ttt","onTouchEvent--" + event.getAction());
+        //Log.e("ttt", "onTouchEvent--" + event.getAction());
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 if (_isTouchIn) {
@@ -246,7 +246,7 @@ public class QQPointRecyclerview extends FrameLayout {
 
         @Override
         public void onDrawOver(@NonNull Canvas canvas, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            Log.e("ttt", "--onDrawOver");
+            //Log.e("ttt", "--onDrawOver");
             super.onDrawOver(canvas, parent, state);
 
             int childCount = parent.getChildCount();
@@ -256,6 +256,7 @@ public class QQPointRecyclerview extends FrameLayout {
 
                 // 根据child获取对应 adapter中的position
                 int position = parent.getChildAdapterPosition(child);
+                Log.e("ttt", position + "---" + i);
                 RecyclerView.LayoutManager manager = parent.getLayoutManager();
                 left = manager.getLeftDecorationWidth(child);
 
@@ -263,7 +264,7 @@ public class QQPointRecyclerview extends FrameLayout {
                     canvas.drawBitmap(mMedalBmp, left + mMedalBmp.getWidth() / 2, child.getTop() + child.getHeight() / 2 - mMedalBmp.getHeight() / 2, paint);
                 }
 
-                QQPointRecyclerview.this.drawQQPoint(canvas, position, child);
+                QQPointRecyclerview.this.drawQQPoint(canvas, parent, position, child);
             }
         }
 
@@ -281,22 +282,25 @@ public class QQPointRecyclerview extends FrameLayout {
      * 根据position绘制出红点
      *
      * @param canvas
+     * @param parent
      * @param position
      * @param child
      */
-    private void drawQQPoint(Canvas canvas, int position, View child) {
+    private void drawQQPoint(Canvas canvas, RecyclerView parent, int position, View child) {
         //Log.e("ttt", "drawQQPoint");
-        if (position % 5 == 0) {
-            int cx = child.getLeft() + child.getWidth() - 40;
-            int cy = child.getTop() + child.getHeight() / 2;
-            //Log.e("ttt", "--noset--" + currentTouchPos + "--" + position + "--_isTouchIn--" + _isTouchIn);
-            if (currentTouchPos == position && !_isTouchIn) {
-                return;
-            }
-            //Log.e("ttt", "x0--" + point0.x + "--x--" + cx);
-            //Log.e("ttt", "y0--" + point0.y + "--y--" + cy);
+        if (position % 2 == 0 && parent.getAdapter().getItemViewType(position) == RecyclerAdapter2.ITEM_TYPE.ITEM_TYPE_ITEM.ordinal()) {
+            RecyclerAdapter2.NormalHolder normalHolder = (RecyclerAdapter2.NormalHolder) parent.getChildViewHolder(child);
+            int cx = child.getLeft() + normalHolder.qqpoint.getLeft() + normalHolder.qqpoint.getWidth() / 2;
+            int cy = child.getTop() + normalHolder.qqpoint.getTop() + normalHolder.qqpoint.getHeight() / 2;
+//            Log.e("ttt", cy + "----");
+//            //Log.e("ttt", "--noset--" + currentTouchPos + "--" + position + "--_isTouchIn--" + _isTouchIn);
+//            if (currentTouchPos == position && !_isTouchIn) {
+//                return;
+//            }
+//            //Log.e("ttt", "x0--" + point0.x + "--x--" + cx);
+//            //Log.e("ttt", "y0--" + point0.y + "--y--" + cy);
             qqPoints.put(position, new Point(cx, cy));
-            canvas.drawCircle(cx, cy, radiu1, qqPointPaint);
+            //canvas.drawCircle(cx, cy, radiu1, qqPointPaint);
         }
     }
 }
