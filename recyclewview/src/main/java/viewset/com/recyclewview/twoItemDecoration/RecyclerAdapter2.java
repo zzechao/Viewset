@@ -55,6 +55,8 @@ public class RecyclerAdapter2 extends Adapter<ViewHolder> {
             normalHolder.mTV.setText(mDatas.get(position) + "大叔大叔大叔的大叔大叔大叔的蔷薇蔷薇");
             if (position % 2 != 0) {
                 normalHolder.qqpoint.setVisibility(View.GONE);
+            } else {
+                normalHolder.qqpoint.setVisibility(View.VISIBLE);
             }
         }
     }

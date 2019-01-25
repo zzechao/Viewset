@@ -1,5 +1,9 @@
 package viewset.com.recyclewview.twoItemDecoration;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,17 +11,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 
 import viewset.com.recyclewview.R;
@@ -25,35 +29,46 @@ import viewset.com.recyclewview.one.RecyclerAdapter;
 
 public class QQPointRecyclerview extends FrameLayout {
 
+
     RecyclerView rv;
 
     Paint qqPointPaint;
+    Paint paint2;
+    Paint textPaint;
 
-    SparseArray<Point> qqPoints = new SparseArray<>();
+    SparseArray<PointF> qqPoints = new SparseArray<>();
 
     private int currentTouchPos = -1;
-    private Point point0 = new Point();
-    private Point point1 = new Point();
+    private String num;
+    private float textSize;
 
-    private Point point2 = new Point();
-    private Point point3 = new Point();
+    private PointF point0 = new PointF();
+    private PointF point1 = new PointF();
 
-    private Point point4 = new Point();
-    private Point point5 = new Point();
+    private PointF point2 = new PointF();
+    private PointF point3 = new PointF();
+
+    private PointF point4 = new PointF();
+    private PointF point5 = new PointF();
 
     private boolean _isTouchIn; // 接触点是否是point0
     private boolean _isOut; // 是否达到消失距离
+    private boolean _isAnimStart; //
 
     // point1和point的0的长度
     private double mWidth;
     // 阻力
-    private int resistance;
+    private float resistance;
     // point1的半径
-    private final int radiu1;
+    private float radiu1;
     // point0的半径
-    private int radiu0;
+    private float radiu0;
+
     private Path path = new Path();
 
+    private float MIN_RADIU = 2; // point0的最小半径
+    private float MAX_RADIU = 6; // point的半径
+    private final float TOUCH_RESISTANCE = 20; // 阻力
 
     public QQPointRecyclerview(@NonNull Context context) {
         this(context, null);
@@ -73,16 +88,27 @@ public class QQPointRecyclerview extends FrameLayout {
         qqPointPaint.setAntiAlias(true);
         qqPointPaint.setStyle(Paint.Style.FILL);
 
-        resistance = 20;
+        paint2 = new Paint();
+        paint2.setColor(Color.BLUE);
+        paint2.setAntiAlias(true);
+        paint2.setStyle(Paint.Style.FILL);
 
-        radiu1 = 10;
-        radiu0 = radiu1;
+        textPaint = new Paint();
+        textPaint.setColor(Color.WHITE);
+        textPaint.setAntiAlias(true);
+
+        resistance = dip2px(context, TOUCH_RESISTANCE);
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         rv.setLayoutManager(layoutManager);
 
-        LinearItemDecoration1 itemDecoration1 = new LinearItemDecoration1(getContext());
+        QQpointItemDecoration itemDecoration1 = new QQpointItemDecoration(getContext());
         rv.addItemDecoration(itemDecoration1);
     }
 
@@ -91,43 +117,39 @@ public class QQPointRecyclerview extends FrameLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
-        //Log.e("ttt","onInterceptTouchEvent--" + event.getAction());
-        return super.onInterceptTouchEvent(event);
-    }
-
-    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        //Log.e("ttt", "dispatchTouchEvent--" + event.getAction());
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 float preX = event.getX(event.findPointerIndex(0));
                 float preY = event.getY(event.findPointerIndex(0));
                 for (int i = 0; i < qqPoints.size(); i++) {
-                    Point point = qqPoints.get(qqPoints.keyAt(i));
+                    PointF point = qqPoints.get(qqPoints.keyAt(i));
                     if (point != null) {
                         float x = preX - point.x;
                         float y = preY - point.y;
-                        if (Math.abs(x) <= 10 && Math.abs(y) <= 10) {
+                        if (Math.abs(x) <= 10 && Math.abs(y) <= 10 && !_isTouchIn) {
                             _isTouchIn = true;
                             currentTouchPos = qqPoints.keyAt(i);
                             point0.set(point.x, point.y);
                             View child = rv.getLayoutManager().findViewByPosition(currentTouchPos);
-                            if (child != null) {
-                                RecyclerAdapter2.NormalHolder normalHolder = (RecyclerAdapter2.NormalHolder) rv.getChildViewHolder(child);
-                                normalHolder.qqpoint.setVisibility(INVISIBLE);
-                            }
-                            //rv.getLayoutManager().get
-                            break;
+                            RecyclerAdapter2.NormalHolder normalHolder = (RecyclerAdapter2.NormalHolder) rv.getChildViewHolder(child);
+                            MAX_RADIU = normalHolder.qqpoint.getWidth() / 2;
+                            MIN_RADIU = MAX_RADIU / 2;
+                            radiu1 = MAX_RADIU;
+                            radiu0 = MAX_RADIU;
+                            num = normalHolder.qqpoint.getText().toString();
+                            textSize = normalHolder.qqpoint.getTextSize();
+                            textPaint.setTextSize(textSize);
+
+                            event.setAction(MotionEvent.ACTION_MOVE);
+                            boolean touch = this.onTouchEvent(event);
+                            normalHolder.qqpoint.setVisibility(INVISIBLE);
+                            return touch;
                         }
                     }
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (_isTouchIn) {
-                    return this.onTouchEvent(event);
-                }
-                break;
             case MotionEvent.ACTION_UP:
                 if (_isTouchIn) {
                     return this.onTouchEvent(event);
@@ -139,7 +161,6 @@ public class QQPointRecyclerview extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //Log.e("ttt", "onTouchEvent--" + event.getAction());
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 if (_isTouchIn) {
@@ -151,11 +172,15 @@ public class QQPointRecyclerview extends FrameLayout {
                 break;
             case MotionEvent.ACTION_UP:
                 if (_isTouchIn) {
-                    _isTouchIn = false;
-                    _isOut = false;
-                    point1.set(0, 0);
-                    currentTouchPos = -1;
-                    postInvalidate();
+                    if (_isOut) { // 消失状态时
+                        View child = rv.getLayoutManager().findViewByPosition(currentTouchPos);
+                        RecyclerAdapter2.NormalHolder normalHolder = (RecyclerAdapter2.NormalHolder) rv.getChildViewHolder(child);
+                        normalHolder.qqpoint.setVisibility(GONE);
+                        qqPoints.remove(currentTouchPos);
+                        reset();
+                    } else {
+                        startResetAnim();
+                    }
                     return true;
                 }
                 break;
@@ -163,9 +188,53 @@ public class QQPointRecyclerview extends FrameLayout {
         return super.onTouchEvent(event);
     }
 
+    private void startResetAnim() {
+        _isAnimStart = true;
+        ValueAnimator animatorX = ValueAnimator.ofFloat(point1.x, point0.x);
+        animatorX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                point1.x = (float) animation.getAnimatedValue();
+                postInvalidate();
+            }
+        });
+        ValueAnimator animatorY = ValueAnimator.ofFloat(point1.y, point0.y);
+        animatorY.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                point1.y = (float) animation.getAnimatedValue();
+                postInvalidate();
+            }
+        });
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(animatorX, animatorY);
+        animatorSet.setInterpolator(new OvershootInterpolator());
+        animatorSet.start();
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                View child = rv.getLayoutManager().findViewByPosition(currentTouchPos);
+                RecyclerAdapter2.NormalHolder normalHolder = (RecyclerAdapter2.NormalHolder) rv.getChildViewHolder(child);
+                normalHolder.qqpoint.setVisibility(VISIBLE);
+                reset();
+            }
+        });
+    }
+
+    private void reset() {
+        _isAnimStart = false;
+        _isTouchIn = false;
+        _isOut = false;
+        radiu0 = radiu1;
+        point0.set(0, 0);
+        point1.set(0, 0);
+
+        currentTouchPos = -1;
+        postInvalidate();
+    }
+
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        //Log.e("ttt", "dispatchDraw");
         super.dispatchDraw(canvas);
 
         if (point1.x != 0 && point1.y != 0) { // 如果point1的xy有值
@@ -187,41 +256,46 @@ public class QQPointRecyclerview extends FrameLayout {
             }
 
             canvas.drawCircle(point1.x, point1.y, radiu1, qqPointPaint);
-//            if (!_isAnimStart) {
-//                String num = "11";
-//                int textWidth = (int) textPaint.measureText(num);
-//                canvas.drawText(num, point1.x - textWidth / 2, point1.y + 10 / 2, textPaint);
-//            }
+
+            if (!_isOut && point0.x != 0 && point0.y != 0) {
+                canvas.drawCircle(point0.x, point0.y, radiu0, qqPointPaint);
+            }
+
+            if (!_isAnimStart) {
+                int textWidth = (int) textPaint.measureText(num);
+                canvas.drawText(num, point1.x - textWidth / 2, point1.y + textSize / 2, textPaint);
+            }
         }
+
     }
 
     private void resetPoint() {
         double a = Math.atan((point1.y - point0.y) * 1F / (point1.x - point0.x));
 
         mWidth = Math.abs((point1.y - point0.y) / Math.sin(a));
-        radiu0 = (radiu1 - mWidth / resistance) < 4 ? 4 : (int) (radiu1 - mWidth / resistance);
-        point2.x = (int) (point0.x + radiu0 * Math.sin(a));
-        point2.y = (int) (point0.y - radiu0 * Math.cos(a));
+        radiu0 = (radiu1 - mWidth / resistance) < MIN_RADIU ? MIN_RADIU : (float) (radiu1 - mWidth / resistance);
+        point2.x = (float) (point0.x + (radiu0 - 1) * Math.sin(a));
+        point2.y = (float) (point0.y - (radiu0 - 1) * Math.cos(a));
 
-        point3.x = (int) (point0.x - radiu0 * Math.sin(a));
-        point3.y = (int) (point0.y + radiu0 * Math.cos(a));
+        point3.x = (float) (point0.x - (radiu0 - 1) * Math.sin(a));
+        point3.y = (float) (point0.y + (radiu0 - 1) * Math.cos(a));
 
-        point4.x = (int) (point1.x + radiu1 * Math.sin(a));
-        point4.y = (int) (point1.y - radiu1 * Math.cos(a));
+        point4.x = (float) (point1.x + radiu1 * Math.sin(a));
+        point4.y = (float) (point1.y - radiu1 * Math.cos(a));
 
-        point5.x = (int) (point1.x - radiu1 * Math.sin(a));
-        point5.y = (int) (point1.y + radiu1 * Math.cos(a));
+        point5.x = (float) (point1.x - radiu1 * Math.sin(a));
+        point5.y = (float) (point1.y + radiu1 * Math.cos(a));
         if ((radiu1 - mWidth / resistance) < 3) {
             _isOut = true;
         }
     }
 
-    class LinearItemDecoration1 extends RecyclerView.ItemDecoration {
+    class QQpointItemDecoration extends RecyclerView.ItemDecoration {
 
         private final Bitmap mMedalBmp;
         Paint paint;
 
-        public LinearItemDecoration1(Context context) {
+        public QQpointItemDecoration(Context context) {
             paint = new Paint();
             paint.setColor(Color.parseColor("#ff669900"));
             paint.setAntiAlias(true);
@@ -235,18 +309,6 @@ public class QQPointRecyclerview extends FrameLayout {
         @Override
         public void onDraw(@NonNull Canvas canvas, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             super.onDraw(canvas, parent, state);
-
-            int childCount = parent.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View child = parent.getChildAt(i);
-
-                RecyclerView.LayoutManager manager = parent.getLayoutManager();
-                int left = manager.getLeftDecorationWidth(child);
-
-                int cx = left / 2;
-                int cy = child.getTop() + child.getHeight() / 2;
-                canvas.drawCircle(cx, cy, 20, paint);
-            }
         }
 
         @Override
@@ -261,7 +323,6 @@ public class QQPointRecyclerview extends FrameLayout {
 
                 // 根据child获取对应 adapter中的position
                 int position = parent.getChildAdapterPosition(child);
-                Log.e("ttt", position + "---" + i);
                 RecyclerView.LayoutManager manager = parent.getLayoutManager();
                 left = manager.getLeftDecorationWidth(child);
 
@@ -269,6 +330,7 @@ public class QQPointRecyclerview extends FrameLayout {
                     canvas.drawBitmap(mMedalBmp, left + mMedalBmp.getWidth() / 2, child.getTop() + child.getHeight() / 2 - mMedalBmp.getHeight() / 2, paint);
                 }
 
+                // 调用外部去构建
                 QQPointRecyclerview.this.drawQQPoint(canvas, parent, position, child);
             }
         }
@@ -277,10 +339,7 @@ public class QQPointRecyclerview extends FrameLayout {
         @Override
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
-            //outRect.top = 1;
-            //outRect.left = 100;
         }
-
     }
 
     /**
@@ -292,20 +351,12 @@ public class QQPointRecyclerview extends FrameLayout {
      * @param child
      */
     private void drawQQPoint(Canvas canvas, RecyclerView parent, int position, View child) {
-        //Log.e("ttt", "drawQQPoint");
+        // 每次滑动都重新计算每个红点的坐标
         if (position % 2 == 0 && parent.getAdapter().getItemViewType(position) == RecyclerAdapter2.ITEM_TYPE.ITEM_TYPE_ITEM.ordinal()) {
             RecyclerAdapter2.NormalHolder normalHolder = (RecyclerAdapter2.NormalHolder) parent.getChildViewHolder(child);
-            int cx = child.getLeft() + normalHolder.qqpoint.getLeft() + normalHolder.qqpoint.getWidth() / 2;
-            int cy = child.getTop() + normalHolder.qqpoint.getTop() + normalHolder.qqpoint.getHeight() / 2;
-//            Log.e("ttt", cy + "----");
-//            //Log.e("ttt", "--noset--" + currentTouchPos + "--" + position + "--_isTouchIn--" + _isTouchIn);
-//            if (currentTouchPos == position && !_isTouchIn) {
-//                return;
-//            }
-//            //Log.e("ttt", "x0--" + point0.x + "--x--" + cx);
-//            //Log.e("ttt", "y0--" + point0.y + "--y--" + cy);
-            qqPoints.put(position, new Point(cx, cy));
-            //canvas.drawCircle(cx, cy, radiu1, qqPointPaint);
+            float cx = child.getLeft() + normalHolder.qqpoint.getLeft() + normalHolder.qqpoint.getWidth() / 2;
+            float cy = child.getTop() + normalHolder.qqpoint.getTop() + normalHolder.qqpoint.getHeight() / 2;
+            qqPoints.put(position, new PointF(cx, cy));
         }
     }
 }
