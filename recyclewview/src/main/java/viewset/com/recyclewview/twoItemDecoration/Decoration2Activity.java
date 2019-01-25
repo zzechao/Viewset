@@ -17,10 +17,10 @@ public class Decoration2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_itemdecoration1);
+        setContentView(R.layout.activity_itemdecoration2);
 
         generateDatas();
-        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.linear_recycler_view);
+        final RecyclerView mRecyclerView = findViewById(R.id.linear_recycler_view);
 
         //线性布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

@@ -17,9 +17,6 @@ import android.view.View;
 import viewset.com.recyclewview.DensityUtil;
 import viewset.com.recyclewview.R;
 
-/**
- * https://blog.csdn.net/cx1229/article/details/54091669
- */
 public class LinearItemDecoration2 extends RecyclerView.ItemDecoration {
 
     private final Bitmap mMedalBmp;
