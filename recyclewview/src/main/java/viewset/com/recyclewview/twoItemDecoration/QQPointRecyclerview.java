@@ -27,8 +27,10 @@ import android.widget.FrameLayout;
 import viewset.com.recyclewview.R;
 import viewset.com.recyclewview.one.RecyclerAdapter;
 
+/**
+ * QQ红点功能+recyclerview
+ */
 public class QQPointRecyclerview extends FrameLayout {
-
 
     RecyclerView rv;
 
