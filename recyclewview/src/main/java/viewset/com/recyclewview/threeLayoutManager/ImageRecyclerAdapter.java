@@ -34,6 +34,7 @@ public class ImageRecyclerAdapter extends Adapter<ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.e("ttt", "onBindViewHolder");
         NormalHolder normalHolder = (NormalHolder) holder;
+        normalHolder.mIv.setImageResource(mDatas.get(position));
     }
 
     @Override

@@ -17,19 +17,13 @@ public class LayoutManagerImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_layoutmanager1);
 
-        generateDatas();
+        //generateDatas();
         final RecyclerView mRecyclerView = findViewById(R.id.linear_recycler_view);
 
         ImageLayoutManager layoutManager = new ImageLayoutManager();
         mRecyclerView.setLayoutManager(layoutManager);
 
-        RecyclerAdapter3 adapter = new RecyclerAdapter3(this, mDatas);
+        ImageRecyclerAdapter adapter = new ImageRecyclerAdapter();
         mRecyclerView.setAdapter(adapter);
-    }
-
-    private void generateDatas() {
-        for (int i = 0; i < 200; i++) {
-            mDatas.add("第 " + i + " 个item");
-        }
     }
 }

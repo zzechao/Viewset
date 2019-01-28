@@ -90,7 +90,6 @@ public class RecyclerAdapter3 extends Adapter<ViewHolder> {
                     Toast.makeText(mContext, mTV.getText(), Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
     }
 
