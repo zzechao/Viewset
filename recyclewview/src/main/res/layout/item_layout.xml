@@ -25,6 +25,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/yuan"
         android:gravity="center"
+        android:visibility="gone"
         android:text="11"
         android:textColor="@android:color/white"
         android:textSize="12sp" />

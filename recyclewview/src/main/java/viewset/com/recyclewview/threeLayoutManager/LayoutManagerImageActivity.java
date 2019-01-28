@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import viewset.com.recyclewview.R;
 
-public class LayoutManager3Activity extends AppCompatActivity {
+public class LayoutManagerImageActivity extends AppCompatActivity {
 
     private ArrayList<String> mDatas = new ArrayList<>();
 
@@ -20,10 +20,8 @@ public class LayoutManager3Activity extends AppCompatActivity {
         generateDatas();
         final RecyclerView mRecyclerView = findViewById(R.id.linear_recycler_view);
 
-        LayoutManager3 layoutManager3 = new LayoutManager3();
-        mRecyclerView.setLayoutManager(layoutManager3);
-
-        //mRecyclerView.addItemDecoration(new LinearItemDecoration1(this));
+        ImageLayoutManager layoutManager = new ImageLayoutManager();
+        mRecyclerView.setLayoutManager(layoutManager);
 
         RecyclerAdapter3 adapter = new RecyclerAdapter3(this, mDatas);
         mRecyclerView.setAdapter(adapter);

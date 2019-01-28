@@ -62,6 +62,10 @@
         <activity
             android:name=".threeLayoutManager.LayoutManager3Activity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".threeLayoutManager.LayoutManagerImageActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

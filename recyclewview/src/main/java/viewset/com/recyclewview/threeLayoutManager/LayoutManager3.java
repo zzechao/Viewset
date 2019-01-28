@@ -29,11 +29,9 @@ public class LayoutManager3 extends RecyclerView.LayoutManager {
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         //super.onLayoutChildren(recycler, state);
-        if (getItemCount() == 0) {//没有Item，界面空着吧
-            detachAndScrapAttachedViews(recycler);
+        if (getItemCount() == 0 || state.isPreLayout()) {//没有Item，界面空着吧
             return;
         }
-        detachAndScrapAttachedViews(recycler);
 
         mItemRects.clear();
         mHasAttachedItems.clear();
@@ -55,6 +53,8 @@ public class LayoutManager3 extends RecyclerView.LayoutManager {
             mItemRects.append(i, rect);
             mHasAttachedItems.put(i, false);
         }
+
+        detachAndScrapAttachedViews(recycler);
 
         int visableCount = (int) Math.ceil(getVerticalSpace() * 1F / mItemHeight);
         for (int i = 0; i < visableCount; i++) {
